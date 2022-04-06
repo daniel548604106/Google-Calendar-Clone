@@ -3,7 +3,7 @@ import React, { useContext, useState } from 'react';
 
 import GlobalContext from '../context/GlobalContext';
 
-const labelClasses = ['indigo', 'gray', 'green', 'blue', 'red', 'purple'];
+const labelClasses = ['blue', 'red'];
 
 interface CalendarEvent {
   title: string;
@@ -29,6 +29,11 @@ const EventModal = () => {
   const [selectedLabel, setSelectedLabel] = useState(
     selectedEvent ? selectedEvent.label : 'indigo'
   );
+
+  function generateLabelClasses(i: number) {
+    const bg = `bg-${labelClasses[i]}-500`;
+    return `${bg} w-6 h-6 rounded-full flex items-center justify-center cursor-pointer`;
+  }
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -135,7 +140,7 @@ const EventModal = () => {
             {labelClasses.map((labelClass, i) => (
               <span
                 onClick={() => setSelectedLabel(labelClass)}
-                className={`bg-${labelClass}-500 w-6 h-6 rounded-full flex items-center justify-center cursor-pointer`}
+                className={`${generateLabelClasses(i)}`}
                 key={i}
               >
                 {selectedLabel === labelClass && (

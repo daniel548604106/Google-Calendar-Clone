@@ -23,7 +23,7 @@ const CalendarHeader = () => {
         src="/google-calendar-logo.png"
         alt="google calendar logo"
       />
-      <h2 className="mr-10 text-xl text-gray-500 font-bold">Calendar</h2>
+      <h2 className="mr-10 text-xl  text-gray-500 font-bold ml-5">Calendar</h2>
       <button
         onClick={() => handleResetMonth()}
         className="border rounded py-2 px-4 mr-5"
