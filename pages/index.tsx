@@ -1,10 +1,17 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
+import { useState } from 'react';
 
+import CalendarHeader from '../components/CalendarHeader';
+import Month from '../components/Month';
+import Sidebar from '../components/SIdebar';
 import styles from '../styles/Home.module.css';
+import { getMonth } from '../utils/day';
 
 const Home: NextPage = () => {
+  console.table(getMonth());
+  const [currentMonth, setCurrentMonth] = useState(getMonth());
   return (
     <div className={styles.container}>
       <Head>
@@ -14,18 +21,13 @@ const Home: NextPage = () => {
       </Head>
 
       <h1 className="text-3xl font-bold underline">Hello world!</h1>
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
+      <div className="h-screen flex flex-col">
+        <CalendarHeader />
+        <div className="flex flex-1">
+          <Sidebar />
+          <Month month={currentMonth} />
+        </div>
+      </div>
     </div>
   );
 };
