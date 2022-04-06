@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
-import React, { useEffect, useReducer, useState } from 'react';
+import { addBasePath } from 'next/dist/shared/lib/router/router';
+import React, { useEffect, useMemo, useReducer, useState } from 'react';
 
 import { CalendarEvent } from '../components/EventModal';
 import GlobalContext from './GlobalContext';
@@ -49,6 +50,9 @@ const ContextWrapper = ({ children }: ContextWrapperProps) => {
   );
   const [daySelected, setDaySelected] = useState<any>(dayjs());
   const [showEventModal, setShowEventModal] = useState(false);
+  const [labels, setLabels] = useState<{ label: string; checked: boolean }[]>(
+    []
+  );
 
   const [savedEvents, dispatchCalEvent] = useReducer(
     savedEventsReducer,
@@ -56,10 +60,34 @@ const ContextWrapper = ({ children }: ContextWrapperProps) => {
     initEvents
   );
 
+  const filteredEvents = useMemo(() => {
+    return savedEvents?.filter((evt: any) =>
+      labels
+        .filter((lbl) => lbl.checked)
+        .map((lbl) => lbl.label)
+        .includes(evt.label)
+    );
+  }, [savedEvents, labels]);
+
+  function updateLabel(label: { label: string; checked: boolean }) {
+    setLabels(labels.map((lbl) => (lbl.label === label.label ? label : lbl)));
+  }
+
   useEffect(() => {
     if (typeof localStorage !== 'undefined') {
       localStorage.setItem('savedEvents', JSON.stringify(savedEvents));
     }
+  }, [savedEvents]);
+
+  useEffect(() => {
+    setLabels((prevLabels) => {
+      return [...new Set(savedEvents.map((evt) => evt.label))].map((label) => {
+        const currentLabel = prevLabels.find(
+          (lbl: { label: string; checked: boolean }) => lbl.label === label
+        );
+        return { label, checked: currentLabel ? currentLabel.checked : true };
+      });
+    });
   }, [savedEvents]);
 
   useEffect(() => {
@@ -82,6 +110,10 @@ const ContextWrapper = ({ children }: ContextWrapperProps) => {
         setSelectedEvent,
         savedEvents,
         dispatchCalEvent,
+        labels,
+        filteredEvents,
+        updateLabel,
+        setLabels,
       }}
     >
       {children}

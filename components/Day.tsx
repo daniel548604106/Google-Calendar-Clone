@@ -10,8 +10,12 @@ interface DayProps {
 }
 
 const Day = ({ day, rowIdx }: DayProps) => {
-  const { setDaySelected, setShowEventModal, savedEvents, setSelectedEvent } =
-    useContext(GlobalContext);
+  const {
+    setDaySelected,
+    setShowEventModal,
+    filteredEvents,
+    setSelectedEvent,
+  } = useContext(GlobalContext);
 
   const [dayEvents, setDayEvents] = useState([]);
 
@@ -22,12 +26,12 @@ const Day = ({ day, rowIdx }: DayProps) => {
   }
 
   useEffect(() => {
-    const events = savedEvents.filter(
+    const events = filteredEvents.filter(
       (evt: CalendarEvent) =>
         dayjs(evt.day).format('DD-MM-YY') === day.format('DD-MM-YY')
     );
     setDayEvents(events);
-  }, [day, savedEvents]);
+  }, [day, filteredEvents]);
   return (
     <div className="border border-gray-200 flex flex-col">
       <header className="flex flex-col items-center">
