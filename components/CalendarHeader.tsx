@@ -32,38 +32,23 @@ const CalendarHeader = () => {
       </button>
       <button onClick={() => handleChangeMonth(monthIndex - 1)}>
         <span className="cursor-pointer text-gray-600 mx-2">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth="2"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M15 19l-7-7 7-7"
-            />
-          </svg>
+          <Image
+            width={30}
+            height={30}
+            src="/icons/chevron-left.svg"
+            alt="left-icon"
+          />
         </span>
       </button>
       <button onClick={() => handleChangeMonth(monthIndex + 1)}>
         <span className="cursor-pointer text-gray-600 mx-2">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth="2"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M9 5l7 7-7 7"
-            />
-          </svg>
+          <Image
+            width={30}
+            height={30}
+            className="flex items-center justify-center"
+            src="/icons/chevron-right.svg"
+            alt="left-icon"
+          />
         </span>
       </button>
       <h2 className="ml-4 text-xl text-gray-500 font-bold">
