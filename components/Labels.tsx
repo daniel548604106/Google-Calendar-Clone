@@ -8,7 +8,7 @@ const Labels = () => {
     <div>
       <p className="text-gray-500 font-bold mt-10">Label</p>
       {labels.map(({ label, checked }, index) => (
-        <label key={index} className="flex items-center mt-30 block">
+        <label key={index} className="flex items-center mt-30">
           <input
             type="checkbox"
             onChange={() => updateLabel({ label, checked: !checked })}

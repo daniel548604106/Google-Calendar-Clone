@@ -1,5 +1,4 @@
 import dayjs from 'dayjs';
-import { addBasePath } from 'next/dist/shared/lib/router/router';
 import React, { useEffect, useMemo, useReducer, useState } from 'react';
 
 import { CalendarEvent } from '../components/EventModal';
@@ -81,7 +80,13 @@ const ContextWrapper = ({ children }: ContextWrapperProps) => {
 
   useEffect(() => {
     setLabels((prevLabels) => {
-      return [...new Set(savedEvents.map((evt) => evt.label))].map((label) => {
+      return [
+        ...new Set<string>(
+          savedEvents.map(
+            (evt: { label: string; checked: boolean }) => evt.label
+          )
+        ),
+      ].map((label: string) => {
         const currentLabel = prevLabels.find(
           (lbl: { label: string; checked: boolean }) => lbl.label === label
         );
