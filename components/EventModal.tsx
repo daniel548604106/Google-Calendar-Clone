@@ -5,12 +5,47 @@ import GlobalContext from '../context/GlobalContext';
 
 const labelClasses = ['indigo', 'gray', 'green', 'blue', 'red', 'purple'];
 
+interface CalendarEvent {
+  title: string;
+  description: string;
+  label: string;
+  day: number;
+  id: number;
+}
+
 const EventModal = () => {
-  const { showEventModal, setShowEventModal, daySelected } =
-    useContext(GlobalContext);
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [selectedLabel, setSelectedLabel] = useState('indigo');
+  const {
+    showEventModal,
+    setShowEventModal,
+    daySelected,
+    dispatchCalEvent,
+    selectedEvent,
+    setSelectedEvent,
+  } = useContext(GlobalContext);
+  const [title, setTitle] = useState(selectedEvent ? selectedEvent.title : '');
+  const [description, setDescription] = useState(
+    selectedEvent ? selectedEvent.description : ''
+  );
+  const [selectedLabel, setSelectedLabel] = useState(
+    selectedEvent ? selectedEvent.label : 'indigo'
+  );
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    const calendarEvent: CalendarEvent = {
+      title,
+      description,
+      label: selectedLabel,
+      day: daySelected?.valueOf(),
+      id: selectedEvent ? selectedEvent.id : Date.now(),
+    };
+    if (selectedEvent) {
+      dispatchCalEvent({ type: 'update', payload: calendarEvent });
+    } else {
+      dispatchCalEvent({ type: 'push', payload: calendarEvent });
+    }
+    setShowEventModal(false);
+  }
 
   return (
     <div className="h-screen w-full fixed inset-0 flex items-center justify-center">
@@ -19,16 +54,41 @@ const EventModal = () => {
           <span className="">
             <Image src="/icons/handle.svg" alt="close" width={30} height={30} />
           </span>
-          <button onClick={() => setShowEventModal(false)}>
-            <span>
-              <Image
-                src="/icons/close.svg"
-                alt="close"
-                width={30}
-                height={30}
-              />
-            </span>
-          </button>
+          <div>
+            {selectedEvent && (
+              <button
+                onClick={() => {
+                  dispatchCalEvent({ type: 'delete', payload: selectedEvent });
+                  setShowEventModal(false);
+                  setSelectedEvent(null);
+                }}
+              >
+                <span>
+                  <Image
+                    src="/icons/trash.svg"
+                    alt="close"
+                    width={30}
+                    height={30}
+                  />
+                </span>
+              </button>
+            )}
+            <button
+              onClick={() => {
+                setShowEventModal(false);
+                setSelectedEvent(null);
+              }}
+            >
+              <span>
+                <Image
+                  src="/icons/close.svg"
+                  alt="close"
+                  width={30}
+                  height={30}
+                />
+              </span>
+            </button>
+          </div>
         </header>
         <div className="p-3 space-y-4">
           <div className="flex items-center">
@@ -93,6 +153,7 @@ const EventModal = () => {
         </div>
         <footer className="flex justify-end w-100 border-t p-3 mt-5">
           <button
+            onClick={(e) => handleSubmit(e)}
             type="submit"
             className="bg-blue-500 hover:bg-blue-600 px-6 py-2 rounded text-white"
           >
@@ -105,3 +166,4 @@ const EventModal = () => {
 };
 
 export default EventModal;
+export type { CalendarEvent };
