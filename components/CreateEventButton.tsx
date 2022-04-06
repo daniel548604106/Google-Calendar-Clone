@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
+
+import GlobalContext from '../context/GlobalContext';
 
 const CreateEventButton = () => {
+  const { showEventModal, setShowEventModal } = useContext(GlobalContext);
+
   return (
-    <button className="border p-2 rounded-full flex items-center shadow-md hover:shadow-2xl">
+    <button
+      onClick={() => setShowEventModal(true)}
+      className="border p-2 rounded-full flex items-center shadow-md hover:shadow-2xl"
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         className="h-6 w-6 text-gray-600"
