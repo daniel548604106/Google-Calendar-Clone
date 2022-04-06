@@ -27,7 +27,7 @@ const EventModal = () => {
     selectedEvent ? selectedEvent.description : ''
   );
   const [selectedLabel, setSelectedLabel] = useState(
-    selectedEvent ? selectedEvent.label : 'indigo'
+    selectedEvent ? selectedEvent.label : 'blue'
   );
 
   function generateLabelClasses(i: number) {
